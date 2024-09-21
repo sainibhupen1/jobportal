@@ -10,18 +10,15 @@ import UpdateProfileDialog from "./UpdateProfileDialog";
 import { useSelector } from "react-redux";
 import useGetAppliedJobs from "@/hooks/useGetAppliedJobs";
 
-// const skills = ["Html", "css", "Javascript", "React js"];
-
 const Profile = () => {
-  useGetAppliedJobs();
-  const isResume = true;
-  const [open, setOpen] = useState(false);
-  const { user } = useSelector((store) => store.auth);
+  useGetAppliedJobs(); // Custom hook to fetch applied jobs
+  const isResume = true; // Assuming resume is available
+  const [open, setOpen] = useState(false); // State for opening the profile update dialog
+  const { user } = useSelector((store) => store.auth); // Accessing user data from Redux store
 
   return (
     <div>
       <Navbar />
-
       <div className="max-w-4xl mx-auto bg-white border-gray-200 rounded-2xl my-5 p-8">
         <div className="flex justify-between">
           <div className="flex items-center gap-4">
@@ -39,7 +36,7 @@ const Profile = () => {
           </div>
 
           <Button
-            onClick={() => setOpen(true)}
+            onClick={() => setOpen(true)} // Open dialog for updating profile
             variant="outline"
             className="text-right"
           >
@@ -78,7 +75,7 @@ const Profile = () => {
           <Label className="text-md font-bold">Resume</Label>
           {isResume ? (
             <a
-              target="blank"
+              target="_blank" // Open resume in a new tab
               href={user?.profile?.resume}
               className="text-blue-500 w-full hover:underline cursor-pointer"
             >
@@ -91,12 +88,10 @@ const Profile = () => {
       </div>
       <div className="max-w-4xl mx-auto bg-white rounded-2xl">
         <h1 className="font-bold text-lg my-5">Applied Jobs</h1>
-        {/* Application Table  */}
-
-        <AppliedJobTable />
+        <AppliedJobTable /> {/* Component to display the applied jobs */}
       </div>
-
-      <UpdateProfileDialog open={open} setOpen={setOpen} />
+      <UpdateProfileDialog open={open} setOpen={setOpen} />{" "}
+      {/* Dialog for updating profile */}
     </div>
   );
 };

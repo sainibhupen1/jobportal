@@ -11,9 +11,7 @@ import { USER_API_END_POINT } from "@/utils/constant";
 import { setUser } from "@/redux/authSlice";
 
 const Navbar = () => {
-  // const user = true;
   const { user } = useSelector((store) => store.auth);
-  // console.log(user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -28,23 +26,20 @@ const Navbar = () => {
         toast.success(res.data.message);
       }
     } catch (error) {
-      console.log(error);
       toast.error(error.response.data.message);
     }
   };
 
   return (
-    <div className="bg-white">
-      <div className="flex items-center justify-between mx-auto max-w-7xl h-16">
-        <div>
-          <h1 className="text-2xl font-bold">
-            Job<span className="text-[#F83002]">Portal</span>
-          </h1>
-        </div>
+    <div className="bg-white p-4 md:p-6">
+      <div className="flex items-center justify-between max-w-7xl mx-auto h-16">
+        <h1 className="text-2xl font-bold">
+          Job<span className="text-[#F83002]">Portal</span>
+        </h1>
 
         <div className="flex items-center gap-12">
-          <ul className="flex font-medium items gap-5">
-            {user && user.role == "recruiter" ? (
+          <ul className="flex font-medium items-center gap-5">
+            {user && user.role === "recruiter" ? (
               <>
                 <li>
                   <Link to="/admin/companies">Companies</Link>
@@ -109,8 +104,8 @@ const Navbar = () => {
                     </div>
                   </div>
 
-                  <div className="flex flex-col my-2  text-gray-600">
-                    {user && user.role == "student" && (
+                  <div className="flex flex-col my-2 text-gray-600">
+                    {user && user.role === "student" && (
                       <div className="flex w-fit items-center gap-2 cursor-pointer">
                         <User2 />
                         <Button variant="link">
@@ -132,6 +127,25 @@ const Navbar = () => {
           )}
         </div>
       </div>
+
+      {/* Responsive Styles */}
+      <style jsx>{`
+        @media (max-width: 768px) {
+          .flex {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+
+          .navbar-links {
+            flex-direction: column;
+            gap: 1rem;
+          }
+
+          .button-container {
+            flex-direction: column;
+          }
+        }
+      `}</style>
     </div>
   );
 };

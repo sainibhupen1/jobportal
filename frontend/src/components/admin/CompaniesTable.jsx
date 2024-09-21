@@ -37,7 +37,7 @@ const CompaniesTable = () => {
   }, [companies, searchCompanyByText]);
 
   return (
-    <div>
+    <div className="overflow-x-auto">
       <Table>
         <TableCaption>A List of your registered companies</TableCaption>
         <TableHeader>
@@ -50,7 +50,7 @@ const CompaniesTable = () => {
         </TableHeader>
         <TableBody>
           {filterCompany?.map((company) => (
-            <tr key={company._id}>
+            <TableRow key={company._id}>
               <TableCell>
                 <Avatar>
                   <AvatarImage src={company.logo} />
@@ -63,7 +63,7 @@ const CompaniesTable = () => {
                   <PopoverTrigger>
                     <MoreHorizontal />
                   </PopoverTrigger>
-                  <PopoverContent className="w-32">
+                  <PopoverContent className="w-32 bg-gray-200">
                     <div
                       onClick={() =>
                         navigate(`/admin/companies/${company._id}`)
@@ -76,7 +76,7 @@ const CompaniesTable = () => {
                   </PopoverContent>
                 </Popover>
               </TableCell>
-            </tr>
+            </TableRow>
           ))}
         </TableBody>
       </Table>

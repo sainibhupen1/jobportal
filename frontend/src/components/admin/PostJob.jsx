@@ -19,8 +19,6 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 
-const companyArray = [];
-
 const PostJob = () => {
   const [input, setInput] = useState({
     title: "",
@@ -36,7 +34,6 @@ const PostJob = () => {
 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
   const { companies } = useSelector((store) => store.company);
 
   const changeEventHandler = (e) => {
@@ -45,9 +42,9 @@ const PostJob = () => {
 
   const selectChangeHandler = (value) => {
     const selectedCompany = companies.find(
-      (company) => company.name.toLowerCase() == value
+      (company) => company.name.toLowerCase() === value
     );
-    setInput({ ...input, companyId: selectedCompany._id });
+    setInput({ ...input, companyId: selectedCompany?._id });
   };
 
   const submitHandler = async (e) => {
@@ -80,7 +77,7 @@ const PostJob = () => {
           onSubmit={submitHandler}
           className="p-8 max-w-4xl border border-gray-200 shadow-lg rounded-md"
         >
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label>Title</Label>
               <Input
@@ -171,21 +168,19 @@ const PostJob = () => {
 
             {companies.length > 0 && (
               <Select onValueChange={selectChangeHandler}>
-                <SelectTrigger className="w-[200px] border-gray-300 rounded hover:border-gray-700 hover:border-2">
+                <SelectTrigger className="border-gray-300 rounded hover:border-gray-700 hover:border-2">
                   <SelectValue placeholder="Select a Company" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup className="bg-gray-200 font-bold ">
-                    {companies.map((company) => {
-                      return (
-                        <SelectItem
-                          key={company._id}
-                          value={company?.name?.toLowerCase()}
-                        >
-                          {company.name}
-                        </SelectItem>
-                      );
-                    })}
+                    {companies.map((company) => (
+                      <SelectItem
+                        key={company._id}
+                        value={company?.name?.toLowerCase()}
+                      >
+                        {company.name}
+                      </SelectItem>
+                    ))}
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -194,7 +189,6 @@ const PostJob = () => {
 
           {loading ? (
             <Button className="w-full mt-4">
-              {" "}
               <Loader2 className="mr-2 h-4 animate-spin" />
               Please wait
             </Button>
@@ -204,9 +198,9 @@ const PostJob = () => {
             </Button>
           )}
 
-          {companies.length == 0 && (
+          {companies.length === 0 && (
             <p className="text-xs text-red-600 font-bold text-center my-3">
-              Please register a company first, before posting a Jobs.
+              Please register a company first before posting jobs.
             </p>
           )}
         </form>

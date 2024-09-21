@@ -13,7 +13,6 @@ import useGetCompanyById from "@/hooks/useGetCompanyById";
 
 const CompanySetup = () => {
   const params = useParams();
-
   useGetCompanyById(params.id);
 
   const [input, setInput] = useState({
@@ -26,7 +25,6 @@ const CompanySetup = () => {
 
   const { singleCompany } = useSelector((store) => store.company);
   const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate();
 
   const changeEventHandler = (e) => {
@@ -66,7 +64,7 @@ const CompanySetup = () => {
         navigate("/admin/companies");
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       toast.error(error.response.data.message);
     } finally {
       setLoading(false);
@@ -86,7 +84,7 @@ const CompanySetup = () => {
   return (
     <div>
       <Navbar />
-      <div className="max-w-xl mx-auto my-10">
+      <div className="max-w-4xl mx-auto my-10 px-4">
         <form onSubmit={submitHandler}>
           <div className="flex items-center gap-5 p-8">
             <Button
@@ -99,7 +97,7 @@ const CompanySetup = () => {
             </Button>
             <h1 className="font-bold text-xl">Company Setup</h1>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label>Company Name</Label>
               <Input
@@ -142,13 +140,12 @@ const CompanySetup = () => {
 
             <div>
               <Label>Logo</Label>
-              <Input type="file" name="image/*" onChange={changeFileHandler} />
+              <Input type="file" name="file" onChange={changeFileHandler} />
             </div>
           </div>
 
           {loading ? (
             <Button className="w-full my-4">
-              {" "}
               <Loader2 className="mr-2 h-4 animate-spin" />
               Please wait
             </Button>

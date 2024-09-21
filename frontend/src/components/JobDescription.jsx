@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { useParams } from "react-router-dom";
-
 import { APPLICATION_API_END_POINT, JOB_API_END_POINT } from "@/utils/constant";
 import { setSingleJob } from "@/redux/jobSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,15 +12,12 @@ const JobDescription = () => {
   const params = useParams();
   const jobId = params.id;
   const { singleJob } = useSelector((store) => store.job);
-  // console.log(singleJob);
   const { user } = useSelector((store) => store.auth);
-  // console.log(user);
-
   const dispatch = useDispatch();
 
   const isIntiallyApplied =
     singleJob?.applications?.some(
-      (application) => application.applicant == user?._id
+      (application) => application.applicant === user?._id
     ) || false;
 
   const [isApplied, setIsApplied] = useState(isIntiallyApplied);
@@ -42,8 +38,8 @@ const JobDescription = () => {
         toast.success(res.data.message);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.message);
+      // console.log(error);
+      toast.error(error.response?.data?.message || "Error applying for job");
     }
   };
 
@@ -53,12 +49,11 @@ const JobDescription = () => {
         const res = await axios.get(`${JOB_API_END_POINT}/get/${jobId}`, {
           withCredentials: true,
         });
-        // console.log(res);
         if (res.data.success) {
           dispatch(setSingleJob(res.data.job));
           setIsApplied(
             res.data.job.applications.some(
-              (application) => application.applicant == user?._id
+              (application) => application.applicant === user?._id
             )
           );
         }
@@ -75,24 +70,24 @@ const JobDescription = () => {
         <div>
           <h1 className="font-bold text-xl">{singleJob?.title}</h1>
           <div className="flex items-center gap-2 mt-4">
-            <Badge variant="ghost" className={"text-blue-700 font-bold"}>
+            <Badge variant="ghost" className="text-blue-700 font-bold">
               {singleJob?.position} Positions
             </Badge>
-            <Badge variant="ghost" className={"text-[#F83002] font-bold"}>
+            <Badge variant="ghost" className="text-[#F83002] font-bold">
               {singleJob?.jobType}
             </Badge>
-            <Badge variant="ghost" className={"text-[#7209b7] font-bold"}>
-              {singleJob?.salary}LPA
+            <Badge variant="ghost" className="text-[#7209b7] font-bold">
+              {singleJob?.salary} LPA
             </Badge>
           </div>
         </div>
         <Button
           onClick={isApplied ? null : applyJobHandler}
           disabled={isApplied}
-          className={` ${
+          className={`${
             isApplied
               ? "bg-gray-600 cursor-not-allowed"
-              : " bg-[#7209b7] hover:bg-[#7f68a5]"
+              : "bg-[#7209b7] hover:bg-[#7f68a5]"
           }`}
         >
           {isApplied ? "Already Applied" : "Apply Now"}
@@ -104,48 +99,23 @@ const JobDescription = () => {
       </h1>
 
       <div className="my-4">
-        <h1 className="font-bold my-1">
-          Role:{" "}
-          <span className="pl-4 font-normal text-gray-800">
-            {singleJob?.title}
-          </span>
-        </h1>
-        <h1 className="font-bold my-1">
-          Location:
-          <span className="pl-4 font-normal text-gray-800">
-            {singleJob?.location}
-          </span>
-        </h1>
-        <h1 className="font-bold my-1">
-          Description:
-          <span className="pl-4 font-normal text-gray-800">
-            {singleJob?.description}
-          </span>
-        </h1>
-        <h1 className="font-bold my-1">
-          Experience:
-          <span className="pl-4 font-normal text-gray-800">
-            {singleJob?.experienceLevel}
-          </span>
-        </h1>
-        <h1 className="font-bold my-1">
-          Salary:
-          <span className="pl-4 font-normal text-gray-800">
-            {singleJob?.salary}LPA
-          </span>
-        </h1>
-        <h1 className="font-bold my-1">
-          Total Application:
-          <span className="pl-4 font-normal text-gray-800">
-            {singleJob?.applications?.length}
-          </span>
-        </h1>
-        <h1 className="font-bold my-1">
-          Posted Date:
-          <span className="pl-4 font-normal text-gray-800">
-            {singleJob?.createdAt.split("T")[0]}
-          </span>
-        </h1>
+        {[
+          { label: "Role", value: singleJob?.title },
+          { label: "Location", value: singleJob?.location },
+          { label: "Description", value: singleJob?.description },
+          { label: "Experience", value: singleJob?.experienceLevel },
+          { label: "Salary", value: `${singleJob?.salary} LPA` },
+          {
+            label: "Total Applications",
+            value: singleJob?.applications?.length,
+          },
+          { label: "Posted Date", value: singleJob?.createdAt?.split("T")[0] },
+        ].map((item, index) => (
+          <h1 key={index} className="font-bold my-1">
+            {item.label}:
+            <span className="pl-4 font-normal text-gray-800">{item.value}</span>
+          </h1>
+        ))}
       </div>
     </div>
   );

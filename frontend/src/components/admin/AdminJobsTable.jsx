@@ -8,7 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { Avatar, AvatarImage } from "../ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Edit, Eye, MoreHorizontal } from "lucide-react";
 import { useSelector } from "react-redux";
@@ -38,7 +37,7 @@ const AdminJobsTable = () => {
   }, [allAdminJobs, searchJobByText]);
 
   return (
-    <div>
+    <div className="overflow-x-auto">
       <Table>
         <TableCaption>A List of your recent posted Jobs</TableCaption>
         <TableHeader>
@@ -51,7 +50,7 @@ const AdminJobsTable = () => {
         </TableHeader>
         <TableBody>
           {filterJobs?.map((job) => (
-            <tr key={job._id}>
+            <TableRow key={job._id} className="hover:bg-gray-50">
               <TableCell>{job?.company?.name}</TableCell>
               <TableCell>{job?.title}</TableCell>
               <TableCell>{job?.createdAt.split("T")[0]}</TableCell>
@@ -81,7 +80,7 @@ const AdminJobsTable = () => {
                   </PopoverContent>
                 </Popover>
               </TableCell>
-            </tr>
+            </TableRow>
           ))}
         </TableBody>
       </Table>

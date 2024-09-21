@@ -16,6 +16,7 @@ import axios from "axios";
 import { APPLICATION_API_END_POINT } from "@/utils/constant";
 
 const shortListingStatus = ["Accepted", "Rejected"];
+
 const ApplicantsTable = () => {
   const { applicants } = useSelector((store) => store.application);
 
@@ -37,10 +38,10 @@ const ApplicantsTable = () => {
   return (
     <div>
       <Table>
-        <TableCaption>A list of your recent applied user</TableCaption>
+        <TableCaption>A list of your recent applied users</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead>FullName</TableHead>
+            <TableHead>Full Name</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Contact</TableHead>
             <TableHead>Resume</TableHead>
@@ -51,7 +52,7 @@ const ApplicantsTable = () => {
         <TableBody>
           {applicants &&
             applicants?.applications?.map((item) => (
-              <tr key={item._id}>
+              <TableRow key={item._id}>
                 <TableCell>{item?.applicant?.fullname}</TableCell>
                 <TableCell>{item?.applicant?.email}</TableCell>
                 <TableCell>{item?.applicant?.phoneNumber}</TableCell>
@@ -70,27 +71,25 @@ const ApplicantsTable = () => {
                   )}
                 </TableCell>
                 <TableCell>{item?.applicant.createdAt.split("T")[0]}</TableCell>
-                <TableCell className="float-right cursor-pointer">
+                <TableCell className="text-right cursor-pointer">
                   <Popover>
                     <PopoverTrigger>
                       <MoreHorizontal />
                     </PopoverTrigger>
                     <PopoverContent className="w-32 bg-gray-200">
-                      {shortListingStatus.map((status, index) => {
-                        return (
-                          <div
-                            onClick={() => statusHandler(status, item._id)}
-                            key={index}
-                            className="flex w-fit items-center my-2 cursor-pointer"
-                          >
-                            <span>{status}</span>
-                          </div>
-                        );
-                      })}
+                      {shortListingStatus.map((status, index) => (
+                        <div
+                          onClick={() => statusHandler(status, item._id)}
+                          key={index}
+                          className="flex w-fit items-center my-2 cursor-pointer"
+                        >
+                          <span>{status}</span>
+                        </div>
+                      ))}
                     </PopoverContent>
                   </Popover>
                 </TableCell>
-              </tr>
+              </TableRow>
             ))}
         </TableBody>
       </Table>

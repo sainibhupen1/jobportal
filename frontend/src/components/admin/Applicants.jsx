@@ -11,7 +11,6 @@ const Applicants = () => {
   const Params = useParams();
   const dispatch = useDispatch();
   const { applicants } = useSelector((store) => store.application);
-  // console.log(applicants);
 
   useEffect(() => {
     const fetchAllApplicants = async () => {
@@ -27,16 +26,13 @@ const Applicants = () => {
       }
     };
     fetchAllApplicants();
-  }, []);
+  }, [Params.id, dispatch]);
 
   return (
     <div>
       <Navbar />
-      <div className="max-w-7xl mx-auto">
-        <h1 className="font-bold text-xl my-5">
-          Your Applicants
-          {/* ({applicants.applications.length}) */}
-        </h1>
+      <div className="max-w-7xl mx-auto px-4">
+        <h1 className="font-bold text-xl my-5">Your Applicants</h1>
         <ApplicantsTable />
       </div>
     </div>

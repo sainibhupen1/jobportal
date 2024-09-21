@@ -15,7 +15,7 @@ const AppliedJobTable = () => {
   const { allAppliedJobs } = useSelector((store) => store.job);
 
   return (
-    <div>
+    <div className="overflow-x-auto">
       <Table>
         <TableCaption>A List of your applied jobs</TableCaption>
         <TableHeader>
@@ -28,7 +28,11 @@ const AppliedJobTable = () => {
         </TableHeader>
         <TableBody>
           {allAppliedJobs.length <= 0 ? (
-            <span>You haven't applied any job yet.</span>
+            <TableRow>
+              <TableCell colSpan={4} className="text-center">
+                You haven't applied for any job yet.
+              </TableCell>
+            </TableRow>
           ) : (
             allAppliedJobs.map((appliedJob) => (
               <TableRow key={appliedJob._id}>
